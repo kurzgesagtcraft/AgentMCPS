@@ -1,0 +1,1 @@
+node d:/vscode/VCPToolBox/MCP/chrome-devtools-mcp/build/src/index.js --isolated --executable-path "C:\Program Files\Google\Chrome\Application\chrome.exe"

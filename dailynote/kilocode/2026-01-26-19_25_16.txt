@@ -1,0 +1,17 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP 网页内容抓取增强反思
+
+**1. 问题诊断**：
+- `windows-mcp` 的 `Scrape-Tool` 在 `use_dom=True` 模式下依赖 UI Automation 树提取文本。
+- 原逻辑仅关注 `TextControl` 等纯文本控件。但在现代 Web 应用（如 AI 对话页面）中，内容常被包装在 `GroupControl` 或 `CustomControl` 中，导致爬取结果为空或不完整。
+
+**2. 解决方案**：
+- **扩大提取范围**：在 `Tree.tree_traversal` 中，针对 `is_dom=True` 的情况，允许从 `GroupControl`、`CustomControl` 和 `ListItemControl` 中提取 `Name` 属性。
+- **数据清洗与去重**：由于 Web 控件的嵌套特性，父子节点可能重复报告相同文本。在 `scrape_tool` 中引入了基于 `set` 的有序去重逻辑，显著提升了输出内容的整洁度。
+
+**3. 实战经验**：
+- 验证了通过 `Powershell-Tool` 启动浏览器并跳转 URL，配合 `Wait-Tool` 等待加载，最后使用 `Scrape-Tool(use_dom=True)` 是获取复杂动态网页内容的有效链路。
+
+Tag: windows-mcp, Scrape-Tool, DOM提取, AI对话爬取, 架构优化

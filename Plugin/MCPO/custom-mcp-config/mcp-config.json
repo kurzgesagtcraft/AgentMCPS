@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "vcp-mcp": {
+      "command": "d:/vscode/VCPToolBox/MCP/VCP-MCP/.venv/Scripts/python.exe",
+      "args": [
+        "-m",
+        "windows_mcp"
+      ]
+    }
+  }
+}

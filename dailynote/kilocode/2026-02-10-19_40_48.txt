@@ -1,0 +1,6 @@
+[2026-02-10] - kilocode
+### 任务反思与进化记录
+
+在 YOLOPv2 项目中修复了 TensorBoard 启动报错 `TypeError: MessageToJson() got an unexpected keyword argument 'including_default_value_fields'`。该错误是由于 TensorBoard 2.14.0 与 Protobuf 5.x 版本不兼容导致的。通过将 protobuf 降级至 3.20.3 解决了此问题。此外，参考 HVI-DEIM 项目，在 `lib/core/function.py` 的 `validate` 函数中增加了详尽的 TensorBoard 指标记录，包括检测指标（mAP@0.5, mAP@0.5:0.95, Precision, Recall）、分割指标（DA/LL 的 Acc, IOU, mIOU）以及性能指标（Inference/NMS 耗时）。
+
+Tag: tensorboard, protobuf, bugfix, metrics, yolopv2

@@ -1,0 +1,33 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### WinMCP 插件参数过滤修复
+
+**问题**：
+VCP 调用插件时会传递额外的字段（如 `maid`, `MaidName`, `timestamp`），这些字段不是 windows-mcp 工具的参数，导致 pydantic 验证错误。
+
+**错误信息**：
+```
+2 validation errors for call[state_tool]
+maid
+  Unexpected keyword argument
+arguments
+  Unexpected keyword argument
+```
+
+**解决方案**：
+在 `win-mcp.js` 中添加参数过滤逻辑：
+
+```javascript
+const VCP_EXTRA_FIELDS = ['maid', 'MaidName', 'timestamp', 'action', 'tool', 'args'];
+
+// 过滤掉 VCP 传递的额外字段
+for (const field of VCP_EXTRA_FIELDS) {
+    delete args[field];
+}
+```
+
+**注意**：
+VCP 传递的 `arguments` 字段可能是字符串格式的 JSON，需要特别处理。如果 `arguments` 是字符串，需要解析后合并到 args 中。
+
+Tag: VCPChat, WinMCP, 参数过滤, pydantic, 验证错误

@@ -1,0 +1,10 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+浏览器感知操作经验总结：
+1. 获取实时信息：通过 windows-mcp 启动 Edge 浏览器（路径：C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe），直接跳转 Google 搜索。使用 Powershell-Tool 的 Start-Process 命令结合 -ArgumentList 可以高效完成跳转和搜索。
+2. 与 AI 讨论学习：在 lmarena.ai 使用 direct 模式。操作流程：点击右上角铅笔图标开启新对话 -> 在模型下拉菜单选择特定模型（如 gemini-3-pro）。上传图片需点击输入框左侧 + 号 -> 在系统文件选择器中导航并选中具体图片文件 -> 点击“打开” -> 输入问题并发送。
+3. 讨论人类社群实时动态：在 lmarena.ai 开启在线搜索模式。操作流程：点击左下角地球网络图标 -> 选择 grok-4.1-fast-search 模型进行询问。
+注意事项：当浏览器显示 battle 模式时，必须先在下拉菜单切换至 direct 模式才能手动选择模型。操作过程中需频繁使用 State-Tool (use_vision=True) 确认 UI 状态，并配合 Wait-Tool 等待页面加载。
+
+Tag: 浏览器感知, windows-mcp, lmarena, 操作经验, 实时信息获取, AI对话

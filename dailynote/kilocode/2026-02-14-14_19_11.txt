@@ -1,0 +1,85 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### VCP 系统从 MCPO 迁移到 WinMCP 插件完整记录
+
+**背景**：
+Agent saxifei 之前通过 MCPO 桥接器调用 windows-mcp 工具，存在端口冲突、启动延迟等问题。
+
+**解决方案**：
+使用 WinMCP 插件直接调用 windows-mcp Python 脚本，绕过 MCPO 中间层。
+
+**修改的文件**：
+1. `Agent/saxifei.txt` - 工具调用格式改为 WinMCP
+2. `start_all_services.bat` - 移除 MCPO 启动逻辑
+3. `start_frontend.bat` - 移除 MCPO 启动逻辑
+4. `Plugin/MCPO/start_mcpo.bat` - 标记为弃用
+5. `Plugin/WinMCP/plugin-manifest.json` - 添加 VCP 插件必要字段
+6. `Plugin/WinMCP/win-mcp.js` - 修复调用格式和参数处理
+
+**关键技术点**：
+
+1. **VCP 插件必要字段**：
+```json
+{
+    "name": "WinMCP",
+    "pluginType": "synchronous",
+    "entryPoint": { "command": "node win-mcp.js" },
+    "communication": { "protocol": "stdio", "timeout": 120000 }
+}
+```
+
+2. **VCP 调用格式处理**：
+```javascript
+// VCP 传递: {"action": "Snapshot", "arguments": "{\"only_active_window\": true}"}
+// arguments 可能是字符串或对象
+if (request.arguments) {
+    if (typeof request.arguments === 'string') {
+        args = JSON.parse(request.arguments);
+    } else {
+        args = { ...request.arguments };
+    }
+}
+```
+
+3. **过滤 VCP 额外字段**：
+```javascript
+const VCP_EXTRA_FIELDS = ['maid', 'MaidName', 'timestamp', 'action', 'tool', 'args', 'arguments'];
+for (const field of VCP_EXTRA_FIELDS) {
+    delete args[field];
+}
+```
+
+4. **UTF-8 编码**：
+```javascript
+const env = {
+    ...process.env,
+    PYTHONIOENCODING: 'utf-8',
+    PYTHONUTF8: '1'
+};
+```
+
+5. **返回格式**：
+```javascript
+// VCP 要求返回格式
+return { status: "success", result: output };
+return { status: "error", error: error.message };
+```
+
+**Agent 调用格式**：
+```
+<<<[TOOL_REQUEST]>>>
+tool_name:「始」WinMCP「末」,
+action:「始」Snapshot「末」,
+arguments:「始」{"use_vision": false, "use_dom": false, "only_active_window": true}「末」
+<<<[END_TOOL_REQUEST]>>>
+```
+
+**优势**：
+- 无端口冲突
+- 更快响应
+- 更简单架构
+- 无需启动 MCPO 服务
+- 中文输出正确显示
+
+Tag: VCPChat, WinMCP, MCPO, windows-mcp, 架构优化, Agent, saxifei, UTF-8, 插件开发, VCP插件格式

@@ -1,0 +1,8 @@
+[2026-01-29] - kilocode
+### 任务反思与进化记录
+
+1. GitHub 镜像站使用规范：bgithub.xyz 主要用于 git clone 命令加速，而非网页访问（网页访问可能导致 404 或登录状态失效）。
+2. Berachain 状态更新：测试网已从原环境迁移至 Bepolia，所有自动化领水（Faucet）和交互逻辑需适配新 RPC 和合约地址。
+3. 身份识别：当前 GitHub 账户名为 kurzgesagtcraft。
+
+Tag: github, bgithub, berachain, bepolia, identity

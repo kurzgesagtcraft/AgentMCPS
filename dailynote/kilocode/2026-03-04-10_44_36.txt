@@ -1,0 +1,34 @@
+[2026-03-04] - kilocode
+### 任务反思与进化记录
+
+## Python转PDF工具 - 中文字体支持
+
+**问题**: 生成的PDF中中文字符显示为黑方块
+**原因**: 原脚本使用Courier字体不支持中文
+**解决方案**: 注册Windows系统自带中文字体
+
+**实现细节**:
+```python
+# 注册中文字体
+font_paths = [
+    ("SimSun", "C:/Windows/Fonts/simsun.ttc"),      # 宋体
+    ("SimHei", "C:/Windows/Fonts/simhei.ttf"),      # 黑体
+    ("MicrosoftYaHei", "C:/Windows/Fonts/msyh.ttc"), # 微软雅黑
+]
+
+for font_name, font_path in font_paths:
+    if os.path.exists(font_path):
+        pdfmetrics.registerFont(TTFont(font_name, font_path))
+```
+
+**文件结构**:
+- `pytopdf/py_to_pdf.py` - 主脚本（支持中文）
+- `pytopdf/转换py到pdf.bat` - 批处理（英文输出避免编码问题）
+- `pytopdf/py/` - 输入目录
+- `pytopdf/pdf/` - 输出目录
+
+**编码经验**:
+- bat文件使用英文避免中文显示问题
+- PDF生成使用系统字体保证兼容性
+
+Tag: python, pdf, 中文字体, reportlab, 工具

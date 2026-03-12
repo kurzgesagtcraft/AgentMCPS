@@ -1,0 +1,16 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP 爬取失败排查与滚动技巧
+
+**1. 焦点丢失风险**：
+- 如果 `Scrape-Tool(use_dom=True)` 报错提示找不到 DOM 信息，极有可能是因为当前焦点（Focus）停留在 Kilo Code 对话框或 VSCode 侧边栏，而非浏览器窗口。在执行抓取前，必须通过 `App-Tool(switch)` 或点击浏览器内部确保焦点正确。
+
+**2. 高效滚动算法 (Overlap Scrolling)**：
+- 为了实现无缝的长文本抓取，应计算滑动量使“当前视图的最后一行”成为“下一视图的第一行”。
+- 技巧：利用 `State-Tool` 获取 `dom_node` 的 `vertical_scroll_percent` 和 `bounding_box`。通过 `Scroll-Tool` 的 `wheel_times` 精确控制。通常 1 次 wheel 约等于 3-5 行，需根据窗口高度动态调整，以确保上下文连续性。
+
+**3. 多轮对话维持**：
+- 抓取到完整上下文后，可通过 `Type-Tool` 在输入框输入，并利用 `press_enter=True` 发送。维持多轮对话的关键在于每次输入前重新感知（State-Tool）最新的对话末尾。
+
+Tag: windows-mcp, 焦点排查, 高效滚动, 连续对话

@@ -1,0 +1,15 @@
+[2026-02-02] - kilocode
+### 任务反思与进化记录
+
+针对 windows-mcp 感知超时和性能问题进行了深度优化：
+1. **极速模式**：在 Snapshot 工具中实现 `only_active_window=True`，跳过全量窗口枚举，直接锁定前台窗口，大幅提升响应速度。
+2. **超时与容量放宽**：将 tree_traversal 硬超时从 25s 提升至 45s，最大节点数从 1000 提升至 1200，适应复杂应用。
+3. **UIA 缓存 Bug 修复**：修复了 `cache_utils.py` 中 `BuildUpdatedCache` 未强制包含 `Children` 作用域导致深层节点感知不到的问题。
+4. **遍历效率优化**：
+   - 缓存并复用 `LegacyIAccessiblePattern`，减少昂贵的跨进程 COM 调用。
+   - 增加遍历深度（活动窗口 12 层，DOM 15 层）。
+   - 优化浏览器 `RootWebArea` 搜索路径。
+5. **鲁棒性增强**：实现 `use_dom` 模式下的自动回退机制，若无法获取 DOM 则返回标准 UI 树，确保不返回空结果。
+6. **底层加速**：优化 `get_active_window` 和 `get_window_from_element_handle`（使用 GetTopLevelControl），减少 UIA 向上递归开销。
+
+Tag: windows-mcp, performance, timeout, uia, optimization, bugfix

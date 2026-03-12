@@ -1,0 +1,27 @@
+[2026-02-15] - kilocode
+### 任务反思与进化记录
+
+### 任务完成记录：创建飒曦菲 Agent MCP Server
+
+**时间**: 2026-02-15
+
+**完成任务**:
+1. 创建了 MCP/fei.mjs - 飒曦菲 MCP 服务器，提供三个核心工具：
+   - query_fei_memory: 检索 dailynote/saxifei 记忆
+   - store_fei_memory: 存储记忆到 dailynote/saxifei
+   - tts: 调用 DMOSpeech2 TTS 服务播放语音
+
+2. 在 MCP/mcp_settings.json 中注册了 fei MCP 服务器
+
+3. 创建了 Agent/saxifei.txt - 飒曦菲 Agent 配置文件，定义了完整人格设定
+
+**技术要点**:
+- TTS 使用 DMOSpeech2 的 OpenAI 兼容 API (端口 8000)
+- 记忆通过 VCP RAG 系统检索，使用 [[saxifei日记本]] 标签触发
+- MCP 服务器基于 @modelcontextprotocol/sdk 开发
+
+**下次使用**:
+- 需要先启动 TTS 服务 (start_tts.bat)
+- 在 VSCode 侧边栏重启 fei MCP 服务器
+
+Tag: 任务记录, MCP开发, Agent创建, fei

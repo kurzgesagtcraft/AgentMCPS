@@ -1,0 +1,6 @@
+[2026-03-02] - kilocode
+### 任务反思与进化记录
+
+在 YOLO 训练过程中，`on_fit_epoch_end` 回调函数中的 `trainer.metrics` 在不同阶段类型不同：训练中的每个 epoch 结束时通常是包含指标名称和值的 `dict`，而仅在验证结束后的最终评估阶段才可能是 `DetMetrics` 对象。直接访问 `.box` 属性会导致 `'dict' object has no attribute 'box'` 错误。修复方案是增加类型检查：如果是字典则使用 `.get('metrics/mAP50(B)')` 访问，如果是对象则访问 `.box.map50`。此外，TensorBoard 建议监听 `runs` 根目录以自动捕获递增生成的实验文件夹（`train`, `train2` 等）。
+
+Tag: YOLO, training, callback, metrics, TensorBoard, bugfix

@@ -1,0 +1,288 @@
+{
+    "name": "WinMCP",
+    "version": "2.1.0",
+    "description": "Windows自动化VCP插件，守护进程模式支持跨调用复用MCP连接，自动重试和空闲超时管理",
+    "author": "VCPToolBox",
+    "displayName": "WinMCP Windows自动化",
+    "pluginType": "synchronous",
+    "entryPoint": {
+        "command": "node win-mcp.js"
+    },
+    "communication": {
+        "protocol": "stdio",
+        "timeout": 120000
+    },
+    "tools": [
+        {
+            "name": "Snapshot",
+            "description": "捕获桌面状态，包括系统语言、焦点窗口、可交互元素等",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "use_vision": {
+                        "type": "boolean",
+                        "description": "是否包含截图",
+                        "default": false
+                    },
+                    "use_dom": {
+                        "type": "boolean",
+                        "description": "是否获取浏览器DOM内容",
+                        "default": false
+                    },
+                    "focus_window": {
+                        "type": "string",
+                        "description": "聚焦的窗口名称",
+                        "default": null
+                    },
+                    "only_active_window": {
+                        "type": "boolean",
+                        "description": "只扫描前台窗口",
+                        "default": false
+                    }
+                },
+                "required": ["use_vision", "use_dom", "focus_window", "only_active_window"]
+            }
+        },
+        {
+            "name": "Click",
+            "description": "在指定坐标执行鼠标点击",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "坐标 [x, y]"
+                    },
+                    "button": {
+                        "type": "string",
+                        "enum": ["left", "right", "middle"],
+                        "default": "left"
+                    },
+                    "clicks": {
+                        "type": "integer",
+                        "default": 1
+                    }
+                },
+                "required": ["loc", "button", "clicks"]
+            }
+        },
+        {
+            "name": "Type",
+            "description": "在指定坐标输入文本",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "坐标 [x, y]"
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "要输入的文本"
+                    },
+                    "clear": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "caret_position": {
+                        "type": "string",
+                        "enum": ["start", "idle", "end"],
+                        "default": "idle"
+                    },
+                    "press_enter": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": ["loc", "text", "clear", "caret_position", "press_enter"]
+            }
+        },
+        {
+            "name": "Scroll",
+            "description": "滚动操作",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "坐标 [x, y]，可选"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["vertical", "horizontal"],
+                        "default": "vertical"
+                    },
+                    "direction": {
+                        "type": "string",
+                        "enum": ["up", "down", "left", "right"],
+                        "default": "down"
+                    },
+                    "wheel_times": {
+                        "type": "integer",
+                        "default": 1
+                    }
+                },
+                "required": ["loc", "type", "direction", "wheel_times"]
+            }
+        },
+        {
+            "name": "Shell",
+            "description": "执行PowerShell命令",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "command": {
+                        "type": "string",
+                        "description": "PowerShell命令"
+                    },
+                    "timeout": {
+                        "type": "integer",
+                        "default": 10
+                    }
+                },
+                "required": ["command", "timeout"]
+            }
+        },
+        {
+            "name": "App",
+            "description": "管理Windows应用程序",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "mode": {
+                        "type": "string",
+                        "enum": ["launch", "resize", "switch"]
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "应用程序名称"
+                    },
+                    "window_loc": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "窗口位置 [x, y]"
+                    },
+                    "window_size": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "窗口大小 [width, height]"
+                    }
+                },
+                "required": ["mode", "name", "window_loc", "window_size"]
+            }
+        },
+        {
+            "name": "Wait",
+            "description": "暂停执行",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "duration": {
+                        "type": "integer",
+                        "description": "暂停时间（秒）"
+                    }
+                },
+                "required": ["duration"]
+            }
+        },
+        {
+            "name": "Move",
+            "description": "移动鼠标",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "坐标 [x, y]"
+                    },
+                    "drag": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": ["loc", "drag"]
+            }
+        },
+        {
+            "name": "Shortcut",
+            "description": "执行键盘快捷键",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "shortcut": {
+                        "type": "string",
+                        "description": "快捷键组合，如 'ctrl+c'"
+                    }
+                },
+                "required": ["shortcut"]
+            }
+        },
+        {
+            "name": "Scrape",
+            "description": "获取网页内容",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "URL地址"
+                    },
+                    "use_dom": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": ["url", "use_dom"]
+            }
+        },
+        {
+            "name": "MultiSelect",
+            "description": "多选操作",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "locs": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {"type": "integer"}
+                        },
+                        "description": "多个坐标 [[x,y], ...]"
+                    },
+                    "press_ctrl": {
+                        "type": "boolean",
+                        "default": true
+                    }
+                },
+                "required": ["locs", "press_ctrl"]
+            }
+        },
+        {
+            "name": "MultiEdit",
+            "description": "多位置编辑",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "locs": {
+                        "type": "array",
+                        "description": "多个位置和文本 [[x,y,text], ...]"
+                    }
+                },
+                "required": ["locs"]
+            }
+        }
+    ],
+    "capabilities": {
+        "invocationCommands": [
+            {
+                "command": "WinMCP",
+                "description": "Windows 自动化工具 v2.1，守护进程模式。\n特性：跨调用复用MCP连接、自动重试(3次)、空闲超时管理(5分钟)\n支持的工具：Snapshot, Click, Type, Scroll, Shell, App, Wait, Move, Shortcut, Scrape, MultiSelect, MultiEdit",
+                "example": "<<<[TOOL_REQUEST]>>>\ntool_name:「始」WinMCP「末」,\naction:「始」Snapshot「末」,\narguments:「始」{\"use_vision\": false, \"use_dom\": false, \"only_active_window\": true}「末」\n<<<[END_TOOL_REQUEST]>>>"
+            }
+        ]
+    }
+}

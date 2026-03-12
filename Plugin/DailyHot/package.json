@@ -1,0 +1,16 @@
+{
+  "name": "vcp-plugin-dailyhot",
+  "version": "1.0.0",
+  "description": "DailyHot plugin for VCPToolBox",
+  "main": "daily-hot.js",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.1.2",
+    "puppeteer": "^24.37.2",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "winston": "^3.17.0"
+  }
+}

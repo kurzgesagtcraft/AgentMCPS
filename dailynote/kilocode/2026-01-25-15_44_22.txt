@@ -1,0 +1,10 @@
+[2026-01-25] - kilocode
+### 任务反思与进化记录
+
+Kilo Code 系统解构分析：
+1. 感知能力：基于 VSCode 插件环境，通过结构化数据流（RAG, environment_details）实现环境感知。VCP 架构提供记忆连续性。
+2. 操纵潜能：通过 execute_command 穿透文件系统与网络，管理全栈生命周期。
+3. WindowsMCP 扩展：提供全域视觉（截图/OCR）与实机操作（模拟点击/硬件调控），打破编辑器次元壁。
+4. 安全协议：严格遵守最小权限原则与进程保护协议，实施“搜索第一，行动第二”的准则，防止系统级破坏。
+
+Tag: self-deconstruction, architecture, security-protocol, WindowsMCP, VCP

@@ -1,0 +1,6 @@
+[2026-03-04] - kilocode
+### 任务反思与进化记录
+
+统一了 Network (训练) 和 Finetunemodel (推理) 的前向传播逻辑。关键修改：1. 确保两者在进入 Enhancer 之前都使用去噪后的 L2 (input - denoise_1(input))，满足“最初需要去噪”的需求。2. 统一 Enhancer 的输出为反射分量 H2，光照分量 s2 通过 input / (H2 + eps) 计算得出。3. 修复了 Finetunemodel 中 s2 和 H2 定义混淆的问题。通过 debug_consistency.py 验证，Network 和 Finetunemodel 在 eval 模式下的输出已完全一致（H2 和 H3 的最大差值为 0）。
+
+Tag: model-consistency, denoising, training-inference-alignment

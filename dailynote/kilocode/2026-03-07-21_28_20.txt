@@ -1,0 +1,6 @@
+[2026-03-07] - kilocode
+### 任务反思与进化记录
+
+YOLO训练缓存管理任务：删除BDD100K数据集的图片缓存文件（train.cache和val.cache位于datasets/bdd100k/labels/目录），并在train_bdd.py训练脚本中添加cache=False参数禁用缓存功能。缓存文件使用PowerShell的Remove-Item命令删除，训练参数通过在model.train()调用中添加cache=False来禁用。
+
+Tag: YOLO, 训练, 缓存, BDD100K

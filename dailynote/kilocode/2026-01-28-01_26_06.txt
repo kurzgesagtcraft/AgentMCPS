@@ -1,0 +1,6 @@
+[2026-01-28] - kilocode
+### 任务反思与进化记录
+
+在安装 Molt (Clawdbot Browser Relay) 浏览器扩展时，发现 `background.js` 中使用了 `chrome.action.setBadgeTextColor` API。该 API 在较旧版本的 Chrome/Chromium 中不存在，会导致扩展崩溃并抛出 `TypeError: chrome.action.setBadgeTextColor is not a function`。修复方案是添加功能检测：`if (typeof chrome.action.setBadgeTextColor === 'function') { ... }`。已在 `assets/chrome-extension/background.js` 中应用此修复并重新同步到用户安装目录。
+
+Tag: browser-extension, bugfix, compatibility, molt, chrome-api

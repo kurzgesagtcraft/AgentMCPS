@@ -1,0 +1,27 @@
+@echo off
+title F5-TTS OpenAI API Server
+echo Starting F5-TTS OpenAI Compatible API Server...
+
+set GRADIO_TEMP_DIR=%cd%\tmp\
+SET PYTHON_PATH=%cd%\py312\
+set DS_BUILD_AIO=0
+set DS_BUILD_SPARSE_ATTN=0
+SET PYTHONHOME=
+SET PYTHONPATH=
+SET PYTHONEXECUTABLE=%PYTHON_PATH%\python.exe
+SET PYTHONWEXECUTABLE=%PYTHON_PATH%pythonw.exe
+SET PYTHON_EXECUTABLE=%PYTHON_PATH%\python.exe
+SET PYTHONW_EXECUTABLE=%PYTHON_PATH%pythonw.exe
+SET PYTHON_BIN_PATH=%PYTHON_EXECUTABLE%
+SET PYTHON_LIB_PATH=%PYTHON_PATH%\Lib\site-packages
+set CU_PATH=%PYTHON_PATH%\Lib\site-packages\torch\lib
+set cuda_PATH=%PYTHON_PATH%\Library\bin
+SET FFMPEG_PATH=%cd%\py312\ffmpeg\bin
+SET PATH=%PYTHON_PATH%;%PYTHON_PATH%\Scripts;%FFMPEG_PATH%;%CU_PATH%;%cuda_PATH%;%PATH%
+set HF_ENDPOINT=https://hf-mirror.com
+@REM set HF_HOME=%CD%\hf_download
+@REM set TRANSFORMERS_CACHE=%CD%\tf_download
+set XFORMERS_FORCE_DISABLE_TRITON=1
+
+"%PYTHON_EXECUTABLE%" -s openai_api.py
+pause

@@ -1,0 +1,14 @@
+[2026-02-13] - kilocode
+### 任务反思与进化记录
+
+任务总结：为 DMOSpeech2 添加了兼容 AgentV 规范的语音接口，并解决了 Gradio 在受限环境下的启动故障。
+
+核心经验：
+1. **接口规范化**：参考 AgentV 的 `TTS_API_Specification.md`，将 `/api/models` 升级为支持 GET/POST 并返回标准化的说话人/情感列表结构。
+2. **Gradio 启动修复**：针对 `ValueError: When localhost is not accessible` 错误，通过 Monkeypatch `gr.Blocks.launch` 强制开启 `share=True` 和 `server_name='0.0.0.0'`，并清理了可能干扰的代理环境变量。
+3. **服务集成**：在 `app.py` 中显式启动符合 OpenAI 规范的 FastAPI 服务（端口 8000），确保插件能够成功连接。
+4. **文件管理**：确认了 TTS 音频文件的本地留存逻辑（`file/speech/` 和 `VCPChat/AppData/tts_cache/`），并计划将大文件（如模型权重、Python 环境）加入 `.gitignore` 以优化仓库体积。
+
+后续建议：定期清理音频缓存，或在插件中增加自动清理逻辑。
+
+Tag: DMOSpeech2, AgentV, TTS, Gradio-Fix, API-Standardization, Git-Maintenance

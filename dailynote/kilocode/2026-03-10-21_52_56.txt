@@ -1,0 +1,6 @@
+[2026-03-10] - kilocode
+### 任务反思与进化记录
+
+在 Zero-HVI 项目中，修复了行人检测 mAP50 下降及训练不稳定的问题。核心经验：1. 自监督去噪（Neighbor2Neighbor）的 pair_downsampler 必须使用原始带噪输入，若使用已去噪图像作为输入会导致过度平滑，抹除行人等关键检测特征。2. Retinex 增强策略中，预测光照图 s 并通过 H = L / s 推导反射图，比直接预测反射图更能保留图像细节，对提升检测 mAP50 至关重要。3. 数值稳定性：将 EPS 提升至 1e-7 并使用标准灰度系数（0.299, 0.587, 0.114）可有效消除紫色噪点并预防 NaN 损失。4. 确保训练（Network）与推理（Finetunemodel）在去噪先后顺序及 Enhancer 输出定义上完全一致。
+
+Tag: Zero-HVI, mAP50-Recovery, Denoising-Logic, Retinex-Strategy, NaN-Prevention

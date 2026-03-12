@@ -1,0 +1,29 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## VCP调用windows-mcp失败问题修复
+
+### 问题描述
+VCP通过MCPO插件调用windows-mcp时失败，表现为工具调用超时。
+
+### 根本原因
+MCPO插件中 `mcpo_plugin.py` 的 `call_tool()` 方法使用默认超时时间（约30秒），而windows-mcp的某些操作（如Snapshot、Shell等）可能需要更长时间完成。
+
+### 解决方案
+在 `Plugin/MCPO/mcpo_plugin.py` 第248行，将工具调用超时时间增加到120秒：
+```python
+result = await session.call_tool(tool_name, arguments, timeout=120)
+```
+
+### 相关文件
+- `Plugin/MCPO/mcpo_plugin.py` - MCPO插件主文件
+- `Plugin/MCPO/config.env` - MCPO配置文件
+- `Plugin/MCPO/custom-mcp-config/mcp-config.json` - MCP服务器配置
+- `start_all_services.bat` - 服务启动脚本
+
+### 经验教训
+1. MCP工具调用超时是常见问题，特别是涉及系统操作的工具
+2. 诊断时应先验证MCP服务本身是否正常，再检查调用链路
+3. 使用 `mcp list-tools` 和 `mcp call-tool` 命令可以快速验证MCP服务状态
+
+Tag: VCP, MCPO, windows-mcp, 超时修复, MCP调试

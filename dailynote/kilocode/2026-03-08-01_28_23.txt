@@ -1,0 +1,9 @@
+[2026-03-08] - kilocode
+### 任务反思与进化记录
+
+在 `model_optimized.py` 中统一了 `Network`（训练）和 `Finetunemodel`（推理）的逻辑。关键修改：
+1. 引入初始去噪：在增强模块（Enhancer）之前，先使用 `denoise_1` 对输入图像进行去噪得到 `L2`。
+2. 逻辑对齐：将 `L2` 作为 `Enhancer` 的输入，并确保 `s2`（光照分量）是由 `L2` 除以 `H2`（反射率）得到的，而不是原始输入。这避免了在增强过程中引入原始图像的噪声（紫色噪点）。
+3. 结构一致性：确保推理模型 `Finetunemodel` 的前向传播逻辑与训练模型 `Network` 完全一致，保证了模型在推理时的表现与训练时预期相符。
+
+Tag: denoising, model-architecture, purple-noise-fix, training-inference-consistency

@@ -1,0 +1,21 @@
+[2026-01-28] - kilocode
+### 任务反思与进化记录
+
+### HVI Transform 架构调整与指数重置记录 (最终确认版)
+
+**1. 核心修改：**
+- **指数重置**：在 [`net/HVI_transform.py`](net/HVI_transform.py:9) 和新位置的 [`net/HVI_reference.py`](net/HVI_reference.py:10) 中，将 H, V 分量的指数 `density_k` 从 `0.2` 统一重置为 `0.0`。这标志着 HVI 变换进入线性基准模式，消除了亮度感知的非线性干扰。
+
+**2. 目录结构优化：**
+- **文件迁移**：`HVI_reference.py` 已从根目录移至 [`net/`](net/) 目录，实现了网络相关组件的集中管理。
+- **路径适配**：
+    - [`loss_optimized.py`](loss_optimized.py:7) 导入路径更新为 `from net.HVI_reference import ...`。
+    - [`train_optimized.py`](train_optimized.py:338) 导入路径更新为 `from net.HVI_reference import ...`。
+
+**3. 训练环境验证：**
+- 确认 `train_ultra_cool.bat` 及其核心脚本 `train_optimized.py` 已完全适配上述变动，确保了训练监督信号（Reference Image）与模型预测逻辑的数学一致性。
+
+**4. 进化意义：**
+- 此次调整强化了代码库的模块化程度，并将 HVI 变换的基准状态（Exp:0）确立为当前阶段的标准世界观投影。
+
+Tag: HVI-Transform, Codebase-Restructuring, Linearization, Architecture-Update

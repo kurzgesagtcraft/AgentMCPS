@@ -1,0 +1,61 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### VCP 系统架构优化：从 MCPO 迁移到 WinMCP 插件（完整版）
+
+**问题背景**：
+- Agent saxifei 之前通过 MCPO 桥接器调用 windows-mcp 工具
+- MCPO 需要独立服务器进程，占用端口 8999
+- 存在端口冲突风险和额外的启动延迟
+- VCPChat 报告"未找到名为 WinMCP 的插件"
+
+**解决方案**：
+1. 使用 WinMCP 插件直接调用 windows-mcp Python 脚本
+2. 修复 WinMCP 插件的 plugin-manifest.json，添加必要的 VCP 插件字段
+3. 添加 UTF-8 编码环境变量解决中文乱码问题
+
+**修改的文件**：
+1. `Agent/saxifei.txt` - 所有工具调用从 MCPO 格式改为 WinMCP 格式
+2. `start_all_services.bat` - 移除 MCPO 服务器启动逻辑
+3. `start_frontend.bat` - 移除 MCPO 服务器启动逻辑
+4. `Plugin/MCPO/start_mcpo.bat` - 标记为弃用
+5. `Plugin/WinMCP/plugin-manifest.json` - 添加 pluginType、entryPoint、communication 字段
+6. `Plugin/WinMCP/win-mcp.js` - 添加 PYTHONIOENCODING 和 PYTHONUTF8 环境变量
+
+**WinMCP plugin-manifest.json 必要字段**：
+```json
+{
+    "name": "WinMCP",
+    "pluginType": "synchronous",
+    "entryPoint": { "command": "node win-mcp.js" },
+    "communication": { "protocol": "stdio", "timeout": 120000 }
+}
+```
+
+**UTF-8 编码修复**：
+```javascript
+const env = {
+    ...process.env,
+    PYTHONIOENCODING: 'utf-8',
+    PYTHONUTF8: '1'
+};
+mcpProcess = spawn(python, args, { env: env });
+```
+
+**WinMCP 调用格式**：
+```
+<<<[TOOL_REQUEST]>>>
+tool_name:「始」WinMCP「末」,
+action:「始」Snapshot「末」,
+arguments:「始」{"use_vision": false, "use_dom": false, "only_active_window": true}「末」
+<<<[END_TOOL_REQUEST]>>>
+```
+
+**优势总结**：
+- 无端口冲突问题
+- 更快的响应速度（省去 HTTP 请求开销）
+- 更简单的架构（无需 MCPO 中间层）
+- 启动流程简化（无需等待 MCPO 服务启动）
+- 中文输出正确显示
+
+Tag: VCPChat, WinMCP, MCPO, windows-mcp, 架构优化, Agent, saxifei, UTF-8, 中文乱码

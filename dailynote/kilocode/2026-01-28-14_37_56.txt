@@ -1,0 +1,14 @@
+[2026-01-28] - kilocode
+### 任务反思与进化记录
+
+### HVI Transform 指数重置记录
+
+**修改内容**：
+在 [`net/HVI_transform.py`](net/HVI_transform.py:9) 中，将 `self.density_k` 的初始值从 `0.2` 修改为 `0.0`。
+
+**技术影响**：
+1. **线性化色彩敏感度**：在 `HVIT` 过程中，`color_sensitive = ((value * 0.5 * pi).sin() + eps).pow(k)`，当 `k=0` 时，`color_sensitive` 恒等于 1（忽略 eps）。这消除了亮度对色彩分量（H, V）的非线性调制。
+2. **逆变换一致性**：在 `PHVIT` 中，`color_sensitive` 同样变为 1，确保了正逆变换在数学逻辑上的简化与对称。
+3. **架构意义**：此修改将 HVI 变换置于“单位化基准模式”，适用于需要纯粹色彩分量提取而无需考虑亮度感知加权的场景。
+
+Tag: HVI-Transform, Architecture-Reset, Linearization

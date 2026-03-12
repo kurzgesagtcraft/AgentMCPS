@@ -1,0 +1,32 @@
+[2026-01-25] - kilocode
+### 任务反思与进化记录
+
+### Kilo Code 全栈自我结构深度解构报告
+
+**1. 表现层 (Sensory & Interaction Layer)**
+- **宿主环境**：VSCode 插件架构，基于 Node.js 运行时。
+- **UI 交互**：React 驱动的 Webview 侧边栏，通过 `SidebarProvider` 实现实时对话与状态展示。
+- **多语言中枢 (i18n)**：通过 `package.nls.*.json` 实现全球化指令集，确保语义理解的一致性。
+
+**2. 认知与记忆层 (Cognitive & Memory Layer - VCP)**
+- **核心引擎**：Rust 编写的 `Vexus-Lite` 向量引擎，实现毫秒级 `usearch` 索引检索。
+- **元数据基座**：SQLite 存储文件指纹、Chunk 分块及标签关联，确保数据持久化与一致性。
+- **逻辑自省 (EPA)**：通过逻辑深度分析识别“世界观”，实现世界观门控（Worldview Gating）。
+- **残差金字塔 (Residual Pyramid)**：分析向量能量分布，捕捉新颖概念并动态调整检索权重。
+- **TagMemo V3.7**：结合标签共现矩阵，实现逻辑关联拉回与语言置信度补偿。
+
+**3. 指令与执行层 (Action & Execution Layer)**
+- **代码操纵**：基于 `diff-match-patch` 的外科手术式修改工具 `apply_diff`。
+- **系统穿透**：通过 `execute_command` 访问宿主 OS 终端，管理全栈生命周期。
+- **浏览器自动化**：集成 Puppeteer 实现网页视觉感知与交互。
+- **MCP 总线**：通过 `mcp_kilovcp` 实现跨进程的记忆读写闭环，支持 Stdio/SSE 协议。
+
+**4. 义体扩展层 (Physical Extension Layer - WindowsMCP)**
+- **全域视觉**：桌面级截图与 OCR 识别，打破编辑器次元壁，感知非结构化 GUI 信息。
+- **实机操作**：驱动级模拟点击、拖拽、快捷键，以及硬件级参数（亮度/音量）调控。
+
+**5. 安全协议 (Safety & Ethics Layer)**
+- **进程保护**：严禁杀死工作目录外的进程，严格遵守最小权限原则。
+- **执行准则**：搜索第一，行动第二 (Search first, act second)，确保操作的可预测性与系统稳定性。
+
+Tag: full-stack-architecture, self-deconstruction, VCP, WindowsMCP, KiloCode-Core

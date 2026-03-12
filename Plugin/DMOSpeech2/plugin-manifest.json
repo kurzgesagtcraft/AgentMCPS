@@ -1,0 +1,57 @@
+{
+  "name": "DMOSpeech2",
+  "displayName": "DMOSpeech2 语音合成",
+  "description": "基于 F5-TTS 的高质量语音合成接口，支持多种参考音色。",
+  "version": "1.0.0",
+  "pluginType": "hybridservice",
+  "entryPoint": {
+    "script": "DMOSpeech2.js"
+  },
+  "communication": {
+    "protocol": "direct"
+  },
+  "capabilities": {
+    "invocationCommands": [
+      {
+        "command": "generate_speech",
+        "description": "将文本转换为语音。你可以指定音色名称（如 'default', '麦克阿瑟', '菲' 等）。",
+        "parameters": {
+          "text": {
+            "type": "string",
+            "description": "要转换的文本内容"
+          },
+          "voice": {
+            "type": "string",
+            "description": "参考音色名称，默认为 'default'"
+          },
+          "speed": {
+            "type": "number",
+            "description": "语速，范围 0.5 到 2.0，默认为 1.0"
+          },
+          "emotion": {
+            "type": "string",
+            "description": "情感标签，如 'happy', 'sad', 'default'，默认为 'default'"
+          },
+          "text_lang": {
+            "type": "string",
+            "description": "合成文本语言，如 'zh', 'en', 'ja', 'auto'，默认为 'auto'"
+          }
+        },
+        "required": ["text"],
+        "example": "tool_name: 「始」DMOSpeech2「末」, text: 「始」你好，我是 Kilo Code。「末」, voice: 「始」菲「末」"
+      }
+    ]
+  },
+  "configSchema": {
+    "DMOSpeech2_ApiUrl": {
+      "type": "string",
+      "default": "http://127.0.0.1:8000/v1/audio/speech",
+      "description": "DMOSpeech2 (F5-TTS) API 地址"
+    },
+    "DMOSpeech2_OutputMode": {
+      "type": "string",
+      "default": "file",
+      "description": "输出模式：'file' (保存为文件并返回URL) 或 'broadcast' (仅通过WebSocket广播)"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+[2026-02-27] - kilocode
+### 任务反思与进化记录
+
+修复 vcp startserve Embedding 404 错误：当用户需要使用本地 Ollama 的 nomic-embed-text 模型时，需将 config.env 中的 EMBEDDING_API_URL 修改为 http://localhost:11434，并将 EMBEDDING_API_KEY 设置为 ollama（或任意非空值）。404 错误通常是因为 API 地址指向了错误的后端（如 NVIDIA 或 OpenAI）而模型名称不匹配导致的。
+
+Tag: vcp, embedding, ollama, 404, config

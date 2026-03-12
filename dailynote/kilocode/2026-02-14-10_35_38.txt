@@ -1,0 +1,29 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### VCP Windows-MCP 调用失败修复经验
+
+**问题诊断**：
+1. VCP通过MCPO插件调用windows-mcp超时
+2. 原因：MCPO服务器每次调用都需要启动（最多60秒），加上加载多个MCP服务器（time, context7, windows-mcp）
+
+**解决方案**：
+1. **精简MCP配置**：修改 `Plugin/MCPO/custom-mcp-config/mcp-config.json`，只保留必要的windows-mcp，移除time和context7
+2. **MCPO服务器常驻运行**：修改 `start_all_services.bat` 和 `start_frontend.bat`，在启动时自动检测并启动MCPO服务器
+3. **创建独立启动脚本**：`Plugin/MCPO/start_mcpo.bat` 用于手动启动MCPO服务器
+
+**关键修改文件**：
+- `Plugin/MCPO/custom-mcp-config/mcp-config.json` - 精简MCP配置
+- `start_all_services.bat` - 添加MCPO服务器启动步骤
+- `start_frontend.bat` - 添加MCPO服务器启动检测
+- `Plugin/MCPO/start_mcpo.bat` - 新建独立启动脚本
+
+**调用格式**：
+- VCP调用windows-mcp工具：`tool_name_param: "windows-mcp_Shell"`
+- 端点格式：`/windows-mcp/{tool_name}`
+
+**性能优化效果**：
+- MCPO服务器启动时间从60秒降低到约5秒（只加载windows-mcp）
+- 后续调用无需等待启动（服务器常驻运行）
+
+Tag: windows-mcp, MCPO, VCP, 调试, 超时修复, MCP配置

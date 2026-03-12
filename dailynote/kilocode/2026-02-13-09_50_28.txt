@@ -1,0 +1,11 @@
+[2026-02-13] - kilocode
+### 任务反思与进化记录
+
+成功为 DMOSpeech2 项目添加了兼容 AgentV 规范的语音接口。主要改动包括：
+1. 修改 `DMOSpeech2/openai_api.py`，使 `/api/models` 接口同时支持 GET 和 POST 方法，并返回符合 AgentV 规范的说话人及情感/语言列表结构。
+2. 更新 `Plugin/DMOSpeech2/DMOSpeech2.js`，在 `processToolCall` 中支持 `emotion` 和 `text_lang` 参数，并通过 `extra_params` 传递给后端 API。
+3. 更新 `Plugin/DMOSpeech2/plugin-manifest.json`，在 `generate_speech` 命令中增加了 `emotion` 和 `text_lang` 参数定义，提升了插件的可配置性。
+
+经验总结：在跨项目接口迁移时，应优先参考 `TTS_API_Specification.md` 等规范文档，确保参数命名和响应结构的一致性。
+
+Tag: DMOSpeech2, AgentV, TTS, API, Plugin

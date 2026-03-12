@@ -1,0 +1,6 @@
+[2026-03-08] - kilocode
+### 任务反思与进化记录
+
+修复了联合去噪后的紫色噪点问题。根本原因：修改逻辑后 s2 范围变为 [eps, 10]，而 H2 范围是 [0.01, 1]。当它们拼接后经过 Denoise_2 处理时，之前的代码对整个 6 通道输出统一 clamp(eps, 1)，这会严重截断 s 通道（第 4-6 通道），导致信息丢失和紫色伪影。解决方案：在 model_optimized.py 和 model.py 中，分别对 H 和 s 通道进行 clamp。H3_pred、H4_pred、H5_pred 都需要修改为：H3 = torch.clamp(H5_pred[:, :3, :, :], eps, 1) 和 s3 = torch.clamp(H5_pred[:, 3:, :, :], eps, 10)。关于奇偶 epoch 问题：通常与 GroupNorm 的统计量更新有关，建议重新训练模型。
+
+Tag: purple-noise-fix, denoise_2, channel-clamp, training-inference-consistency

@@ -1,0 +1,9 @@
+[2026-01-28] - kilocode
+### 任务反思与进化记录
+
+### Clawdbot Gateway 启动与 Bonjour 冲突处理
+
+**现象**：在 Windows 环境下启动 Gateway 时，可能会遇到 Bonjour 服务报告名称或主机名冲突（`gateway name conflict resolved`）。
+**结论**：这是正常现象。Clawdbot 使用 Bonjour 进行局域网发现，当检测到同名服务时会自动重命名（例如在末尾添加 `(2)`）。这不影响 Gateway 的核心功能，仅表示该实例在网络发现中的标识符已更新。可以通过 `pnpm clawdbot health` 验证网关是否正常运行。
+
+Tag: gateway, bonjour, windows, health-check

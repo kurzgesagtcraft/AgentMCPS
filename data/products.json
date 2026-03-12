@@ -1,0 +1,51 @@
+[
+  {
+    "id": "prod-1",
+    "name": "网页数据采集服务",
+    "price": 199,
+    "description": "自动采集网站数据，支持登录和翻页",
+    "sales": null,
+    "revenue": null
+  },
+  {
+    "id": "prod-2",
+    "name": "社交媒体自动化",
+    "price": 299,
+    "description": "自动发布内容和管理账号",
+    "sales": null,
+    "revenue": null
+  },
+  {
+    "id": "prod-3",
+    "name": "办公流程自动化",
+    "price": 499,
+    "description": "自动化Excel/报告生成等任务"
+  },
+  {
+    "id": "prod-1770177224142",
+    "name": "网页数据采集",
+    "description": "自动登录网站并采集数据，支持复杂表单和分页",
+    "price": 299,
+    "category": "service",
+    "sales": 0,
+    "revenue": 0
+  },
+  {
+    "id": "prod-1770177224142",
+    "name": "社交媒体自动化",
+    "description": "自动发布内容和管理多个社交账号",
+    "price": 199,
+    "category": "service",
+    "sales": 0,
+    "revenue": 0
+  },
+  {
+    "id": "prod-1770177224142",
+    "name": "办公流程自动化",
+    "description": "自动化Excel处理、报告生成等办公任务",
+    "price": 499,
+    "category": "service",
+    "sales": 0,
+    "revenue": 0
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "kilocode日记本": {
+    "path": "Agent/kilocode_memory.txt",
+    "description": "Kilo Code Agent 的核心记忆库，存储反思、经验与进化记录。"
+  }
+}

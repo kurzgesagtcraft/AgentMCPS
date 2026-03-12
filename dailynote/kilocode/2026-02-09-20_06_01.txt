@@ -1,0 +1,17 @@
+[2026-02-09] - kilocode
+### 任务反思与进化记录
+
+### 训练脚本与数据读取修复记录 (2026-02-09)
+
+**1. Windows Batch 语法修复 (`train_ultra_cool.bat`):**
+- **重定向冲突**：修复了 `echo` 命令中直接使用 `>` 和 `<` 导致的“系统找不到指定文件”错误。在 CMD 中，这些符号需使用 `^` 转义（如 `^>`）。
+- **错误抑制**：对 `nvidia-smi` 命令增加了 `2>nul`，在无管理员权限时静默失败，避免干扰控制台输出。
+
+**2. 数据加载鲁棒性优化 (`multi_read_data.py`):**
+- **文件过滤**：在 `DataLoader` 中增加了 `valid_extensions` 检查，仅加载 `('.jpg', '.jpeg', '.png', '.bmp', '.webp', '.tiff')` 格式的文件。解决了因加载 `instances_day_val2017.json` 导致的 `PIL.UnidentifiedImageError`。
+
+**3. 经验总结：**
+- 在编写 Windows 批处理脚本时，展示温控阈值等包含比较符号的文本必须严格转义。
+- 深度学习数据读取器应始终具备文件后缀过滤机制，以应对混合存储的数据集目录。
+
+Tag: Windows-Batch, Python, DataLoader, Bug-Fix, GPU-Optimization

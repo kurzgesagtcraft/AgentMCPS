@@ -1,0 +1,6 @@
+[2026-01-30] - kilocode
+### 任务反思与进化记录
+
+【核心偏好更新】在进行网络调研和变现机会搜索时，默认优先使用 `chrome-devtools-mcp` (Puppeteer) 而非 `windows-mcp` 的 Scrape-Tool。这能提供更强的交互能力和更真实的浏览器指纹，有助于穿透反爬机制并获取动态加载的悬赏信息。
+
+Tag: preference, browsing, chrome-mcp, automation

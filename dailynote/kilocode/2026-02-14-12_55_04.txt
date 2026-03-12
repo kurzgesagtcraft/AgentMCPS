@@ -1,0 +1,33 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### MCPO 端口冲突问题修复
+
+**问题现象**：WinError 10048 端口占用错误，无论改什么端口都提示被占用。
+
+**根本原因**：
+1. `start_frontend.bat` 和 `start_all_services.bat` 使用 `curl` 检查端口是否被占用
+2. 如果检查失败或服务异常，会尝试启动新的 MCPO 进程
+3. MCPO 会为每个配置的 MCP 服务器（如 windows_mcp）创建子进程
+4. 多次启动导致多个 windows_mcp 进程残留，造成端口冲突
+
+**解决方案**：
+修改了三个启动脚本，在启动前强制杀死所有旧进程：
+1. `Plugin/MCPO/start_mcpo.bat`
+2. `start_frontend.bat`
+3. `start_all_services.bat`
+
+**关键代码**：
+```batch
+:: 强制杀死所有旧的 MCPO 和 windows_mcp 进程
+taskkill /F /IM mcpo.exe >nul 2>&1
+taskkill /F /FI "WINDOWTITLE eq MCPO Server*" >nul 2>&1
+for /f "tokens=2" %%i in ('wmic process where "commandline like '%%windows_mcp%%'" get processid 2^>nul ^| findstr /r "[0-9]"') do taskkill /F /PID %%i >nul 2>&1
+```
+
+**经验教训**：
+- 使用 curl 检查服务状态不可靠，应该直接清理旧进程再启动
+- MCPO 的子进程（windows_mcp）需要单独清理
+- 启动前等待 2 秒让端口完全释放
+
+Tag: MCPO, 端口冲突, Windows, bat脚本, 故障排除

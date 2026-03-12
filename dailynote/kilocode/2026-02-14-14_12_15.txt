@@ -1,0 +1,47 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### WinMCP 插件 VCP 调用格式适配修复
+
+**问题**：
+VCP 调用 WinMCP 插件时报错 "Missing required parameter: tool"
+
+**原因分析**：
+VCP 调用插件时传递的参数格式是 `{"action": "工具名", ...其他参数}`，而不是 `{"tool": "工具名", "args": {...}}`
+
+**解决方案**：
+修改 `Plugin/WinMCP/win-mcp.js` 的 `handleRequest` 函数，支持两种调用格式：
+
+```javascript
+// 支持两种调用格式：
+// 1. VCP 格式: {"action": "Snapshot", "use_vision": false, ...}
+// 2. 旧格式: {"tool": "Snapshot", "args": {...}}
+let tool, args;
+
+if (request.action) {
+    // VCP 格式：action 是工具名，其他字段是参数
+    tool = request.action;
+    args = { ...request };
+    delete args.action;
+} else if (request.tool) {
+    // 旧格式
+    tool = request.tool;
+    args = request.args || {};
+}
+```
+
+**返回格式**：
+VCP 要求返回 `{"status": "success/error", "result": ...}` 格式，而不是 `{"success": true/false, ...}`
+
+**Agent 调用格式**：
+```
+<<<[TOOL_REQUEST]>>>
+tool_name:「始」WinMCP「末」,
+action:「始」Snapshot「末」,
+arguments:「始」{"use_vision": false, "use_dom": false, "only_active_window": true}「末」
+<<<[END_TOOL_REQUEST]>>>
+```
+
+VCP 会解析这个格式，将 action 和 arguments 传递给插件。
+
+Tag: VCPChat, WinMCP, 插件调用格式, action, tool, 调试

@@ -1,0 +1,18 @@
+[2026-02-27] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP 修复与优化经验总结
+
+**1. 核心功能修复与增强**
+- **Snapshot 性能优化**：在 `Desktop.get_state` 中实现了 `only_active_window` 参数。开启后跳过全窗口枚举，仅解析活动窗口 UI 树，大幅提升快照速度并减少 Token 消耗。
+- **中文鲁棒输入 (CJK Support)**：在 `Desktop.type` 中集成 CJK 字符检测。检测到中文时自动切换为剪贴板粘贴模式 (`Ctrl+V`)，彻底解决 `SendKeys` 丢失字符或乱码的问题。需安装 `pyperclip` 依赖。
+- **功能补全**：实现了 `get_window_by_name` (模糊匹配窗口句柄) 和 `get_click_visualization` (点击位置红圈标记)，确保 `Snapshot` 的 `focus_window` 和 `Click` 的可视化功能正常。
+
+**2. FastMCP 框架避坑指南**
+- **Output Validation Error**：当工具定义了 `outputSchema` (如 FastMCP 自动生成的) 时，Python 的返回类型注解 (如 `-> str | list`) 必须与实际返回数据结构严格一致。若返回包含 `Image` 对象的列表，错误的注解会导致验证失败。**解决方法**：移除显式的返回类型注解，让 FastMCP 自动推导。
+- **参数同步**：修改底层 `service.py` 方法参数后，必须同步更新 `__main__.py` 中的工具定义，否则会触发 `unexpected keyword argument` 错误。
+
+**3. 仓库同步策略**
+- 当本地文件损坏或需全量更新时，使用 `git clone` 覆盖并手动迁移 `.venv` 虚拟环境是保留依赖的最快方式。同步后需立即重新应用本地特有的鲁棒性补丁 (如 CJK 支持)。
+
+Tag: Windows-MCP, CJK-Support, FastMCP, Debugging, Optimization

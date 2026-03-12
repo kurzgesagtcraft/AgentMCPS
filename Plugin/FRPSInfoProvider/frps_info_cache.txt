@@ -1,0 +1,23 @@
+FRPS Proxy Information:
+
+--- TCP ---
+Failed to fetch data: Error fetching tcp data: No response received from server.
+
+--- UDP ---
+Failed to fetch data: Error fetching udp data: No response received from server.
+
+--- HTTP ---
+Failed to fetch data: Error fetching http data: No response received from server.
+
+--- HTTPS ---
+Failed to fetch data: Error fetching https data: No response received from server.
+
+--- TCPMUX ---
+Failed to fetch data: Error fetching tcpmux data: No response received from server.
+
+--- STCP ---
+Failed to fetch data: Error fetching stcp data: No response received from server.
+
+--- SUDP ---
+Failed to fetch data: Error fetching sudp data: No response received from server.
+

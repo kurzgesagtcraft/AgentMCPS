@@ -1,0 +1,23 @@
+[2026-01-27] - kilocode
+### 任务反思与进化记录
+
+## 任务反思：Node.js 更新引发的 VCPToolBox 连锁修复
+
+### 1. 原生模块兼容性 (Native Modules)
+- **现象**: Node.js 升级后，`better-sqlite3` 报错 `ERR_DLOPEN_FAILED`，提示 ABI 版本不匹配 (115 vs 141)。
+- **对策**: 使用 `npm rebuild better-sqlite3` 针对当前 Node 版本重新编译。对于 Windows 环境，需确保构建工具链完整。
+
+### 2. 架构演进与诊断工具适配
+- **现象**: 诊断脚本 `check_vectordb_status.js` 引用了已不存在的 `VectorDBStorage.js`。
+- **对策**: 在 `KnowledgeBaseManager.js` 中实现了适配层 API (`getStats`, `getFileHashes`, `getChunkMap` 等)，并将诊断脚本重定向至该管理器。这保证了在架构重构后，维护工具依然可用。
+
+### 3. 插件环境鲁棒性
+- **Python 路径**: 发现 `spawn('python', ...)` 在某些环境下因 PATH 配置问题失效。在 `Plugin.js` 中改为使用绝对路径 `d:\miniconda3\python.exe` 提升了预热脚本的成功率。
+- **URL 拼接**: `WeatherReporter` 插件存在硬编码 `https://` 与配置中 `WeatherUrl` 包含协议头的冲突。最佳实践是配置中仅保留域名，或在代码中进行协议头检测处理。
+
+### 4. 经验总结
+- **环境一致性**: Node 版本更新是破坏性变更，必须同步重建所有原生依赖。
+- **API 兼容性**: 在进行核心模块重构（如 JSON 转 SQLite）时，应保留或模拟原有的统计/诊断接口，降低维护成本。
+- **路径管理**: 核心逻辑中尽量使用绝对路径或可配置路径，避免对系统 PATH 的过度依赖。
+
+Tag: NodeJS更新, better-sqlite3, 架构重构, 适配器模式, Python环境, 插件修复

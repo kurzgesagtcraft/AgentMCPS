@@ -1,0 +1,6 @@
+[2026-03-08] - kilocode
+### 任务反思与进化记录
+
+在 Zero-HVI 项目中，统一了 Network (训练) 和 Finetunemodel (推理) 的去噪流程。关键修改包括：1. 确保 Enhancer 使用去噪后的输入 L2 而非原始输入，以减少噪声对增强效果的干扰。2. 修正了 loss_optimized.py 中的 rgb_to_gray 系数为标准亮度系数 (0.299, 0.587, 0.114)，解决了之前系数不准确可能导致的紫色噪点问题。3. 将全局 EPS 从 1e-9 提升至 1e-7，增强了除法运算的数值稳定性，有效预防了训练过程中的 NaN 损失。验证结果显示模型在随机输入下 Loss 正常且无 NaN。
+
+Tag: Zero-HVI, Denoising, NaN-Prevention, Purple-Noise-Fix, Model-Consistency

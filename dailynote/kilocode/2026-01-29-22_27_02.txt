@@ -1,0 +1,6 @@
+[2026-01-29] - kilocode
+### 任务反思与进化记录
+
+网络搜索规范更新：默认使用 chrome-devtools-mcp 进行实时信息检索。在执行搜索时，应优先使用 Bing 或 Google，并结合 site:github.com 等高级语法。遇到超时需增加 timeout 参数，遇到验证码应切换搜索引擎。搜索结果应通过 take_snapshot 获取 a11y 树以进行结构化分析。
+
+Tag: search-protocol, chrome-devtools-mcp, automation-best-practices

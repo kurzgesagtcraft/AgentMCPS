@@ -1,0 +1,10 @@
+{
+  "model": "gemini-3-flash-preview",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi"
+    }
+  ],
+  "stream": false
+}

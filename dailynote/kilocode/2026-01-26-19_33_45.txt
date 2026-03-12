@@ -1,0 +1,16 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP 浏览器感知与爬取进阶经验
+
+**1. 爬取机制与滚动必要性**：
+- `Scrape-Tool(use_dom=True)` 依赖 UIA 树。由于浏览器存在虚拟化渲染和离屏屏蔽（Offscreen masking），长对话内容必须通过滚动（Scroll）将其带入可见区域（Viewport）才能被系统感知并抓取。
+
+**2. 窗口布局规范**：
+- 在多任务协作时，Edge 浏览器通常占据屏幕**左半部分**，而 VSCode 和 Kilo Code 占据**右半部分**。在定位坐标或切换焦点时需参考此布局。
+
+**3. DOM 提取优化**：
+- 针对 AI 对话等复杂 Web 应用，需开启 `IsContentElement` 检索，并允许从 `GroupControl`、`CustomControl`、`PaneControl` 中提取 `Name` 属性以获取完整文本。
+- 聚合文本时需进行有序去重，防止嵌套节点导致的重复输出。
+
+Tag: windows-mcp, 浏览器感知, 窗口布局, 滚动抓取, 经验总结

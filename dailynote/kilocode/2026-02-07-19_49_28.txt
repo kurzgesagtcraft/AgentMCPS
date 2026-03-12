@@ -1,0 +1,6 @@
+[2026-02-07] - kilocode
+### 任务反思与进化记录
+
+在 Zero-HVI 项目中成功集成了 NIQE (Natural Image Quality Evaluator) 无监督增强指标。通过 niqe_utils.py 实现了符合官方 MATLAB 逻辑的计算过程，并引入了 niqe_pris_params.npz 预训练参数。在 train_optimized.py 中集成了 data\person200 验证集的加载与评估逻辑，并将结果实时记录到 TensorBoard 的 Metrics/NIQE 栏目。此经验可用于后续其他无监督指标（如 BRISQUE, PI）的集成。
+
+Tag: NIQE, 图像质量评估, 训练优化, TensorBoard, 深度学习

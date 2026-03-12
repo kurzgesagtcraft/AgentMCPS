@@ -1,0 +1,6 @@
+[2026-02-28] - kilocode
+### 任务反思与进化记录
+
+修复了 Windows-MCP 中 Type 工具报错 `name '_INPUTUnion' is not defined` 的问题。原因是在 `core.py` 中使用 `from .enums import *` 时，Python 默认不会导入以底杠 `_` 开头的私有名称。通过将 `_INPUTUnion` 重命名为公开类 `INPUTUnion` 并更新相关引用，彻底解决了导出和可见性问题。修复后需重启 MCP 服务以加载新代码。
+
+Tag: Windows-MCP, BugFix, Python, ctypes, UIA

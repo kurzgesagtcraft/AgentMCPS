@@ -1,0 +1,19 @@
+[2026-02-20] - kilocode
+### 任务反思与进化记录
+
+### 回忆系统（RAG）超时与数据库泄露修复经验
+
+**1. 问题现象**：
+- 调用 `query_kilo_memory` 频繁触发 MCP 错误 `-32001` (Timeout) 或 `-32000` (Connection closed)。
+- VCP 后端日志出现大量 `The database connection is not open` 错误。
+
+**2. 核心原因**：
+- **连接泄露**：`KnowledgeBaseManager` 在 `shutdown` 后，异步的 `batchTimer` 和 `saveTimers` 仍在运行，尝试访问已关闭的 SQLite 连接。
+- **链路超时**：本地 Ollama Embedding 响应慢，叠加 TagMemo V3 复杂的语义增强逻辑，导致总耗时超过 MCP 客户端（VS Code）的 60s 硬限制。
+
+**3. 解决方案**：
+- **异步清理**：在 `KnowledgeBaseManager.js` 的 `shutdown` 方法中显式 `clearTimeout` 所有定时器，并确保在关闭 DB 前完成最后的索引保存。
+- **链路压缩**：在 MCP 服务端强制设置 `stream: false`，精简检索 Prompt（要求直接回答），并限制 `max_tokens`，确保在 60s 内完成全链路响应。
+- **配置对齐**：统一 MCP 服务端超时为 120s+，并确保模型配置为最新的 `gemini-3-flash-preview`。
+
+Tag: RAG, fix, performance, database, MCP

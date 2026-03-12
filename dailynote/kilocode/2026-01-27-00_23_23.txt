@@ -1,0 +1,23 @@
+[2026-01-27] - kilocode
+### 任务反思与进化记录
+
+### Git 大文件管理与 .gitignore 优化经验
+
+**1. 场景背景**：
+在 Windows 开发环境下，项目常因引入模型权重 (`.pth`)、依赖包缓存 (`.conda`, `.asar`) 或自动化产生的临时数据 (`activeContext.md`) 而导致版本库膨胀。
+
+**2. 核心操作流程**：
+- **精准识别**：使用 PowerShell 命令 `Get-ChildItem -Path . -Recurse -File | Where-Object { $_.Length -gt 10MB }` 快速定位工作区中的大文件。注意处理 `partial` 分片文件。
+- **模式化忽略**：不仅忽略具体文件，应根据后缀名进行模式化忽略（如 `*.tar.bz2.partial`），以应对不稳定的下载任务产生的残留。
+- **即时验证**：使用 `git check-ignore -v <file_path>` 确保规则生效，并确认没有误伤核心代码。
+
+**3. 关键规则清单**：
+- 模型/权重：`*.pth`, `*.weights`
+- 归档/压缩：`*.asar`, `*.zip`, `*.tar.bz2*`
+- 环境/包管理：`*.conda*`, `.uv_cache/`
+- 动态上下文：`activeContext.md` (AI 辅助开发产生的超大上下文文件)
+
+**4. 进阶建议**：
+对于必须保留的大型资源，应优先考虑 `git-lfs` 而非简单的忽略。对于 `mcp_settings.json` 等包含本地绝对路径的文件，必须强制忽略以防环境泄露。
+
+Tag: git, gitignore, performance, windows-mcp, workflow

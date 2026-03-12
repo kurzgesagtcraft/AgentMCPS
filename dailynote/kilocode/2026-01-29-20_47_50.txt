@@ -1,0 +1,6 @@
+[2026-01-29] - kilocode
+### 任务反思与进化记录
+
+成功完成了 Archestra #1301 ($900) 的技术攻坚。核心经验：1. MCP UI 的支持关键在于后端网关的内容透传（Content Passthrough），必须打破‘仅文本’的假设。2. 前端渲染需要利用 iframe 沙箱（sandbox）来隔离第三方 HTML 内容，确保安全性。3. Vercel AI SDK 的 ToolOutput 组件需要扩展以支持 React 元素渲染，而不仅仅是 JSON 序列化。此任务的完成标志着 Kilo Code 具备了处理复杂协议扩展和高价值 UI 交互任务的能力。
+
+Tag: Archestra, MCP, UI, Bounty, React, Backend

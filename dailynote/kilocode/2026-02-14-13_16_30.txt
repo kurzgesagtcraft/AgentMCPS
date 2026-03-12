@@ -1,0 +1,33 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## VCPChat 与 KiloCode 端口冲突解决方案
+
+### 问题描述
+VCPChat 通过 MCPO 插件调用 windows-mcp 时，端口 9999 被 KiloCode 的 MCPO 服务器占用，导致 `[WinError 10048] 通常每个套接字地址(协议/网络地址/端口)只允许使用一次` 错误。
+
+### 解决方案
+1. **复制独立的 MCP 实例**：将 `MCP/Windows-MCP` 复制为 `MCP/VCP-MCP`，作为 VCPChat 专用的 MCP 工具实例
+2. **使用独立端口**：VCPChat 的 MCPO 服务器使用端口 8999，避免与 KiloCode 的 9999 冲突
+3. **更新配置文件**：
+   - `Plugin/MCPO/config.env`: MCPO_PORT=8999
+   - `Plugin/MCPO/custom-mcp-config/mcp-config.json`: 指向 VCP-MCP 路径
+   - `start_frontend.bat` 和 `start_all_services.bat`: 使用端口 8999
+   - `Plugin/MCPO/start_mcpo.bat`: 使用端口 8999
+   - `Agent/saxifei.txt`: 工具名称从 `windows-mcp` 改为 `vcp-mcp`
+
+### 关键理解
+- **windows-mcp 本身不占用网络端口**：它通过 stdio 模式运行
+- **端口冲突在 MCPO 层面**：MCPO 作为 HTTP 桥接服务器暴露 MCP 工具
+- **不再全局杀死 mcpo.exe**：因为 KiloCode 可能正在使用
+
+### 修改的文件列表
+1. `MCP/VCP-MCP/` - 新建的独立 MCP 实例
+2. `Plugin/MCPO/config.env` - 端口改为 8999
+3. `Plugin/MCPO/custom-mcp-config/mcp-config.json` - 指向 VCP-MCP
+4. `start_frontend.bat` - 端口改为 8999
+5. `start_all_services.bat` - 端口改为 8999
+6. `Plugin/MCPO/start_mcpo.bat` - 端口改为 8999
+7. `Agent/saxifei.txt` - 工具名称改为 vcp-mcp
+
+Tag: VCPChat, MCPO, windows-mcp, 端口冲突, KiloCode, vcp-mcp

@@ -1,0 +1,17 @@
+[2026-01-28] - kilocode
+### 任务反思与进化记录
+
+### Clawdbot 项目安装与 MiniMax 配置实战经验
+
+**1. Windows 环境适配：**
+- **原生模块编译**：Node.js 版本更新（如 v25.5.0）后，必须执行 `pnpm rebuild better-sqlite3` 以修复 ABI 不匹配导致的 `ERR_DLOPEN_FAILED` 错误。
+- **构建脚本绕过**：在缺失 WSL 的 Windows 环境下，`package.json` 中的 `bash` 脚本会失败。应手动拆解执行 `tsc -p tsconfig.json` 及相关的 `tsx` 拷贝脚本。
+
+**2. MiniMax API 配置 (OpenAI 兼容模式)：**
+- **配置命令**：使用 `pnpm clawdbot config set models.providers.minimax '<JSON_OBJECT>'` 一次性注入完整配置（含 `baseUrl`, `apiKey`, `api`, `models` 数组），避免因逐项设置导致校验失败（如 `models` 字段缺失）。
+- **模型切换**：通过 `pnpm clawdbot models set minimax/MiniMax-M2.1` 快速切换全局默认模型。
+
+**3. Git 版本管理：**
+- 规范化流程：`git add .` -> `git commit -m "启动v3"` -> `git push -u origin v3` -> `git checkout -b v4`。确保在推送后立即切换到新分支以隔离后续开发。
+
+Tag: install, windows, better-sqlite3, minimax, git-workflow

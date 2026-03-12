@@ -1,0 +1,10 @@
+[2026-03-05] - kilocode
+### 任务反思与进化记录
+
+在 YOLO 训练任务中，将训练配置改为 GPU 模式。关键步骤包括：
+1. 环境检查：发现原环境安装的是 CPU 版 PyTorch (2.10.0+cpu)，需重新安装支持 CUDA 的版本 (如 2.6.0+cu124)。
+2. 脚本优化：在 train_bdd.py 中设置 device=0 强制使用 GPU，并将 batch size 翻倍（从 16 增至 32）以适配 RTX 4090。
+3. 路径管理：为了避免 Ultralytics 默认的嵌套目录结构（如 runs/detect/train），将 project 设置为 '.' 并将 name 设置为 'runs/train_YYYYMMDD'，从而使结果直接保存在根目录的 runs 文件夹下。
+4. 监控适配：TensorBoard 启动脚本 start_tb.bat 需配置为监控整个 runs 目录以自动识别动态命名的日志文件夹。
+
+Tag: YOLO, GPU训练, PyTorch, CUDA, 环境配置, 路径优化

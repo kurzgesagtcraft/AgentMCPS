@@ -1,0 +1,13 @@
+[2026-02-09] - kilocode
+### 任务反思与进化记录
+
+任务：根据训练脚本中的 NIQE 计算方法，编写脚本计算 data\person200 原始图片的平均 NIQE。
+
+实现细节：
+1. 创建了 `calculate_original_niqe.py`，复用 `niqe_utils.py`。关键点在于图片读取后需转换为 [0, 1] 浮点数以匹配 `train_optimized.py` 中的 NIQE 计算逻辑。
+2. 创建了 `calc_niqe_person200.bat`，自动激活 `zero-ig` 环境并执行计算。
+3. NIQE 计算依赖 `niqe_pris_params.npz` 文件，脚本中已加入存在性检查。
+
+经验总结：在处理无监督增强指标（如 NIQE）时，确保评估脚本与训练时的预处理（如归一化、颜色空间转换）完全一致是保证指标可比性的前提。
+
+Tag: NIQE, Python, Batch, Image-Quality-Assessment, Zero-HVI

@@ -1,0 +1,20 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+MCPO端口统一修改任务完成（补充更新）。
+
+发现并修复了更多使用旧端口9001的文件：
+
+修改的文件：
+1. plugin-manifest.json - MCPO_PORT默认值从9000改为9999
+2. mcpo_plugin.py - MCPO_PORT默认值从9001改为9999
+3. start_frontend.bat - 所有9001端口改为9999（第7、14、21行的curl检查和启动命令）
+4. start_all_services.bat - 所有9001端口改为9999（第9、15、23行的curl检查和启动命令）
+
+无需修改的文件：
+1. Plugin/MCPO/start_mcpo.bat - 已经使用9999端口
+2. Plugin/MCPO/config.env - 已经配置MCPO_PORT=9999
+
+重要提示：启动MCPO服务时需要先停止旧的9001端口服务，然后用新的启动脚本启动9999端口服务。
+
+Tag: MCPO, 端口配置, VCPToolBox, start_frontend, start_all_services

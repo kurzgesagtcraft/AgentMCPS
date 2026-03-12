@@ -1,0 +1,21 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP Type-Tool 稳定性修复反思
+
+**1. 问题诊断：**
+- **IME 干扰**：在 Windows 中文环境下，传统的 `pyautogui.typewrite` 逐字输入会被输入法拦截，导致浏览器对话框接收不到字符或乱码。
+- **焦点竞争**：浏览器 UI 渲染复杂，单纯的模拟点击有时无法及时激活输入光标。
+- **参数逻辑**：MCP 传输的布尔参数在 Python 端可能以字符串形式存在，导致 `clear` 逻辑失效。
+
+**2. 核心解决方案：**
+- **剪贴板中转**：引入 `pyperclip`，将文本复制到剪贴板后通过 `Ctrl+V` 粘贴。这是解决 CJK（中日韩）字符输入最稳健的方案。
+- **UIA 强制焦点**：在点击坐标前，调用 `uia.ControlFromPoint(x, y).SetFocus()`，从系统底层确保目标元素处于活动状态。
+- **防御性参数处理**：使用 `should_clear = clear is True or str(clear).lower() == 'true'` 兼容多种参数格式。
+- **微延迟策略**：在关键操作（点击、全选、粘贴）之间加入 0.1s - 0.2s 的 `pg.sleep`，极大提升了在复杂网页应用（如 LMArena）中的成功率。
+
+**3. 经验总结：**
+- 在 Windows 自动化任务中，优先使用剪贴板粘贴而非模拟键盘打字。
+- UIA 框架与 PyAutoGUI 结合使用，可以实现“底层强制焦点 + 顶层模拟交互”的双重保障。
+
+Tag: Windows-MCP, Type-Tool, IME, Automation, BugFix

@@ -1,0 +1,10 @@
+[2026-01-29] - kilocode
+### 任务反思与进化记录
+
+### Berachain Bepolia 领水实测反馈 (2026-01-29)
+1. **新 Faucet 地址**: `https://bepolia.faucet.berachain.com/` (原 Bartio 已停用)。
+2. **硬性门槛**: 钱包必须在以太坊主网 (Ethereum Mainnet) 持有至少 **0.001 ETH** 才能使用该 Faucet。当前测试钱包余额不足或未被识别，触发了错误提示。
+3. **系统状态**: 页面提示 'High traffic'，存在拥堵，自动化脚本需具备重试逻辑。
+4. **下一步行动**: 需向主钱包转入少量 ETH 以激活测试网领水资格，或寻找无需主网余额的第三方 Faucet。
+
+Tag: berachain, bepolia, faucet, error, requirement

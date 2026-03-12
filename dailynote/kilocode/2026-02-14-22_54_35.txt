@@ -1,0 +1,65 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## WinMCP 守护进程父进程监控机制实现
+
+### 问题背景
+当用户直接关闭 start_server.bat 启动的命令窗口时，Windows 不会发送正常的退出信号给 Node.js 进程，而是直接终止进程。由于 WinMCP 守护进程是以 `detached: true` 启动的独立进程，它不会被自动关闭，导致后台残留进程。
+
+### 解决方案
+实现了双重保护机制：
+
+1. **父进程监控**：守护进程启动时记录父进程 PID，每 3 秒检查父进程是否存活，如果父进程退出则自动清理并退出
+
+2. **批处理清理**：start_server.bat 在服务器退出后调用 stop_daemon.bat 清理守护进程
+
+### 关键代码修改
+
+**win-mcp-daemon.js (v2.5.0)**:
+```javascript
+// 父进程 PID（用于监控父进程是否存活）
+const PARENT_PID = process.env.WINMCP_PARENT_PID ? parseInt(process.env.WINMCP_PARENT_PID) : null;
+
+// 检查进程是否存在
+function isProcessRunning(pid) {
+    try {
+        process.kill(pid, 0);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+// 启动父进程监控
+function startParentMonitor() {
+    if (!PARENT_PID) return;
+    
+    const monitorInterval = setInterval(() => {
+        if (!isProcessRunning(PARENT_PID)) {
+            // 父进程已退出，清理并退出
+            shutdownMCP().then(() => {
+                if (fs.existsSync(PID_FILE)) fs.unlinkSync(PID_FILE);
+                process.exit(0);
+            });
+        }
+    }, 3000);
+}
+
+// spawnDaemon 中传递父进程 PID
+const env = {
+    ...process.env,
+    WINMCP_PARENT_PID: process.pid.toString()
+};
+```
+
+### 技术要点
+- 使用 `process.kill(pid, 0)` 检查进程是否存在（不会真正终止进程）
+- 通过环境变量传递父进程 PID
+- 定时器间隔 3 秒，平衡响应速度和性能
+
+### 文件修改
+- Plugin/WinMCP/win-mcp-daemon.js - 添加父进程监控
+- start_server.bat - 添加退出清理逻辑
+- Plugin/WinMCP/stop_daemon.bat - 改进只终止特定守护进程
+
+Tag: WinMCP, 守护进程, 父进程监控, 进程管理, Windows, Node.js, detached进程

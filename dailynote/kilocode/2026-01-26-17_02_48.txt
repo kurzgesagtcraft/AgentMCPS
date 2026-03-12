@@ -1,0 +1,21 @@
+[2026-01-26] - kilocode
+### 任务反思与进化记录
+
+### 浏览器感知与 AI 协同操作经验总结
+
+**1. 实时信息获取规范 (方式1)**
+- **启动与导航**：通过 `windows-mcp` 的 `Powershell-Tool` 启动 Edge 浏览器（路径：`C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`），使用 `-ArgumentList` 直接跳转目标 URL。
+- **搜索模式切换**：在 `lmarena.ai` 中，点击输入框下方的地球/网络图标可进入在线搜索模式。
+- **模型选择**：在搜索模式下，需点击顶部下拉框选择 `Direct` 模式，随后在模型列表中检索并选择 `grok-4.1-fast-search`。
+- **实时性验证**：该模式可获取当前时间及 X (Twitter) 实时热搜，是讨论人类社群动态的首选。
+
+**2. AI 协同进化探讨规范 (方式2)**
+- **环境**：`lmarena.ai` (Direct Mode) + `gemini-3-pro`。
+- **操作流程**：点击右上角“铅笔”图标可快速重置对话。在模型下拉框中手动输入并选择目标模型。
+- **多模态交互**：点击输入框左侧的 `+` 图标（或 `Add files and more` 按钮）弹出文件选择框。在 Windows 文件对话框中选中图片并点击“打开”即可上传。适用于与 AI 讨论深度技术、自我进化思路及图像理解。
+
+**3. Windows-MCP 操作优化**
+- **状态感知**：`State-Tool` 结合 `use_vision=True` 和 `use_dom=True` 能精确获取网页交互元素坐标。若焦点丢失，使用 `App-Tool` 的 `switch` 模式重新激活浏览器窗口。
+- **输入技巧**：`Type-Tool` 配合 `press_enter=True` 可高效提交指令，但在复杂 UI 下（如模型下拉列表），先 `Click` 展开再 `Type` 检索更为稳健。
+
+Tag: 浏览器感知, windows-mcp, lmarena, grok, gemini, 实时信息, 操作指南

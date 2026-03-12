@@ -1,0 +1,148 @@
+{
+  "mcpServers": {
+    "kilovcp": {
+      "command": "node",
+      "args": ["d:/vscode/AgentMCPS/MCP/mcp_kilovcp.mjs"],
+      "alwaysAllow": ["store_kilo_reflection", "query_kilo_memory"],
+      "autoStart": true,
+      "description": "Kilo Code Agent 记忆与自省核心。集成 VCPToolbox RAG 记忆库。注意：修改代码或配置后必须手动在侧边栏重启此服务器以生效。",
+      "disabled": false
+    },
+    "fei": {
+      "command": "node",
+      "args": ["d:/vscode/AgentMCPS/MCP/fei.mjs"],
+      "alwaysAllow": ["store_fei_memory", "query_fei_memory"],
+      "autoStart": true,
+      "description": " Agent MCP Server - 提供记忆检索、存储和 TTS 语音播放功能。集成 dailynote/saxifei 记忆库和 DMOSpeech2 TTS 服务。",
+      "disabled": true
+    },
+    "windows-mcp": {
+      "command": "d:/vscode/AgentMCPS/MCP/Windows-MCP/.venv/Scripts/python.exe",
+      "args": ["-m", "windows_mcp"],
+      "alwaysAllow": [
+        "Type-Tool",
+        "Scroll-Tool",
+        "Drag-Tool",
+        "Move-Tool",
+        "Shortcut-Tool",
+        "Shell-Tool",
+        "Scrape-Tool",
+        "Powershell-Tool",
+        "App-Tool",
+        "Click-Tool",
+        "Wait-Tool",
+        "Click",
+        "Type",
+        "Move",
+        "Shortcut",
+        "Wait",
+        "MultiSelect",
+        "MultiEdit",
+        "Scroll",
+        "Scrape",
+        "Snapshot",
+        "App"
+      ],
+      "autoStart": true,
+      "description": "Windows-MCP: Optimized version with CJK support and timeout protection.",
+      "disabled": false
+    },
+    "chrome-devtools-mcp": {
+      "command": "node",
+      "args": [
+        "d:/vscode/AgentMCPS/MCP/chrome-devtools-mcp/build/src/index.js",
+        "--isolated",
+        "--executable-path",
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      ],
+      "autoStart": true,
+      "description": "MCP server for Chrome DevTools",
+      "alwaysAllow": [
+        "click",
+        "close_page",
+        "drag",
+        "emulate",
+        "evaluate_script",
+        "fill",
+        "fill_form",
+        "get_console_message",
+        "get_network_request",
+        "handle_dialog",
+        "hover",
+        "list_console_messages",
+        "list_network_requests",
+        "list_pages",
+        "navigate_page",
+        "new_page",
+        "performance_analyze_insight",
+        "performance_start_trace",
+        "performance_stop_trace",
+        "press_key",
+        "resize_page",
+        "select_page",
+        "take_screenshot",
+        "take_snapshot",
+        "upload_file",
+        "wait_for"
+      ],
+      "disabled": false
+    },
+    "unityMCP": {
+      "type": "stdio",
+      "command": "${env:USERPROFILE}\\.local\\bin\\uvx.exe",
+      "args": [
+        "--from",
+        "mcpforunityserver==9.0.3",
+        "mcp-for-unity",
+        "--transport",
+        "stdio"
+      ],
+      "alwaysAllow": [
+        "batch_execute",
+        "debug_request_context",
+        "execute_custom_tool",
+        "execute_menu_item",
+        "find_gameobjects",
+        "find_in_file",
+        "manage_asset",
+        "manage_components",
+        "manage_editor",
+        "manage_gameobject",
+        "manage_material",
+        "manage_prefabs",
+        "manage_scene",
+        "apply_text_edits",
+        "create_script",
+        "delete_script",
+        "validate_script",
+        "manage_script",
+        "manage_script_capabilities",
+        "get_sha",
+        "manage_scriptable_object",
+        "manage_shader",
+        "manage_vfx",
+        "read_console",
+        "refresh_unity",
+        "run_tests",
+        "get_test_job",
+        "script_apply_edits",
+        "set_active_instance"
+      ],
+      "disabled": true
+    },
+    "blender": {
+      "command": "${env:USERPROFILE}\\.local\\bin\\uv.exe",
+      "args": ["tool", "run", "--from", "blender-mcp", "blender-mcp"],
+      "alwaysAllow": [
+        "get_scene_info",
+        "execute_blender_code",
+        "get_viewport_screenshot",
+        "get_hyper3d_status",
+        "get_hunyuan3d_status",
+        "get_polyhaven_status",
+        "get_object_info"
+      ],
+      "disabled": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## WinMCP 插件日志功能实现
+
+### 任务背景
+用户需要修改 start_frontend.bat 和 WinMCP 插件，使其能够打印日志并实时写入文本文件，特别是 WinMCP 插件调用部分的日志。
+
+### 实现方案
+
+1. **start_frontend.bat 修改**
+   - 添加日志目录创建逻辑 (`logs/`)
+   - 使用 wmic 获取时间戳生成日志文件名
+   - 日志文件格式：`frontend_YYYYMMDD_HHMMSS.log`
+   - 记录启动、目录切换、执行等关键事件
+
+2. **win-mcp.js 修改**
+   - 新增 `writeLog()` 函数实现实时日志写入
+   - 日志文件路径：`logs/winmcp_calls.log`
+   - 使用 `fs.appendFileSync()` 实时追加写入
+   - 替换所有 `console.error` 为 `writeLog` 调用
+   - 记录内容包括：工具调用、参数、结果、错误等
+
+### 注意事项
+- Windows 批处理不支持 `tee` 命令，需直接调用
+- 日志目录需在写入前检查并创建
+- 使用 `fs.appendFileSync` 而非异步写入确保实时性
+
+### 文件位置
+- 前端日志：`logs/frontend_*.log`
+- WinMCP 调用日志：`logs/winmcp_calls.log`
+
+Tag: WinMCP, 日志, batch, Node.js, 插件开发

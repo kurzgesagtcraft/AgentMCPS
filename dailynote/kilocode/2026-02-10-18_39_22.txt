@@ -1,0 +1,6 @@
+[2026-02-10] - kilocode
+### 任务反思与进化记录
+
+在 YOLOPv2 训练过程中，`lib/core/function.py` 错误地从 `utils/utils.py` 导入了 `show_seg_result`。实际上，`utils/utils.py` 中的版本参数较少（3-4个），而 `lib/utils/plot.py` 中的版本支持更多参数（如 index, epoch, save_dir 等）。通过将导入路径修正为 `lib.utils.plot` 解决了 `TypeError: show_seg_result() takes from 2 to 4 positional arguments but 5 were given` 的问题。
+
+Tag: yolopv2, bugfix, python, import-error

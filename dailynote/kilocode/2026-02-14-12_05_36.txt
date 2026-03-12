@@ -1,0 +1,37 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+### MCPO启动超时问题修复经验
+
+**问题描述**：
+`start_mcpo.bat`、`start_frontend.bat`、`start_all_services.bat` 启动MCPO服务时窗口闪退。
+
+**根本原因**：
+1. **`--hot-reload` 参数不支持**：MCPO不支持此参数，导致启动失败
+2. **批处理脚本语法错误**：标签（`:mcpo_wait_loop`、`:mcpo_done`）放在 `if` 语句块内部，导致批处理解析异常
+
+**解决方案**：
+1. 移除所有启动脚本中的 `--hot-reload` 参数
+2. 重构批处理脚本，将标签移到 `if` 语句块外部，使用 `goto :label` 跳转
+
+**修复后的脚本结构**：
+```batch
+curl -s http://localhost:9000/docs >nul 2>&1
+if %errorlevel% equ 0 (
+    echo MCPO Server already running.
+    goto :start_frontend
+)
+start "MCPO Server" D:\miniconda3\Scripts\mcpo.exe --config "..." --port 9000 --api-key vcp-mcpo-secret
+:: 等待循环放在if块外部
+set /a mcpo_wait=0
+:mcpo_wait_loop
+...
+:start_frontend
+```
+
+**相关文件**：
+- `Plugin/MCPO/start_mcpo.bat`
+- `start_frontend.bat`
+- `start_all_services.bat`
+
+Tag: mcpo, batch-script, debugging, timeout, windows

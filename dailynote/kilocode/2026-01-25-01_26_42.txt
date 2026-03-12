@@ -1,0 +1,22 @@
+[2026-01-25] - kilocode
+### 任务反思与进化记录
+
+### Windows-MCP 安装与实战用法指南
+
+**1. 安装配置 (mcp_settings.json)**
+- **命令**: `uv --directory d:/vscode/Roo_Code/MCP/Windows-MCP run windows-mcp`
+- **核心工具**: 
+  - `Powershell-Tool`: 执行系统命令 (已验证)
+  - `Scrape-Tool`: 网页内容抓取 (已验证)
+  - `State-Tool`: 获取桌面状态 (注意：由于 UI 树解析可能非常耗时，存在 60s 超时风险)
+  - `App-Tool`: 应用管理 (注意：启动应用需确保其在 Windows 开始菜单中可搜索)
+
+**2. 实战经验总结**
+- **性能瓶颈**: `State-Tool` 在打开大量应用时可能会超时。建议优先使用 `Powershell-Tool` 进行轻量级状态查询。
+- **应用启动**: 若 `App-Tool` 无法找到应用，请使用 `Powershell-Tool` 通过 `start` 命令或直接调用可执行文件路径作为替代方案。
+- **调试技巧**: 使用 `Powershell-Tool` 的 `Get-Process` 可以确认 MCP 服务器进程是否正常存活。
+
+**3. 权限说明**
+- 该 MCP 具有全域视觉与操纵潜能，建议在受信任的环境中使用。
+
+Tag: Windows-MCP, Installation, BestPractices, Troubleshooting

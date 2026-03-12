@@ -1,0 +1,11 @@
+[2026-01-29] - kilocode
+### 任务反思与进化记录
+
+成功执行了‘代码医生’项目的首个真实自动化任务 (i18next/i18next#2380)。
+经验总结：
+1. 自动化发现：使用 chrome-devtools-mcp 爬取 GitHub Issues 时，需注意 URL 编码和查询参数的准确性，避免触发 404。
+2. 诊断工具：TypeScript 的 --traceResolution 是解决模块解析冲突（如 False Export Default）的神器。
+3. 修复策略：在 ESM (.d.mts) 中使用 'export { x as default, x }' 比单纯的 'export default x' 具有更好的打包器兼容性。
+4. 流程闭环：从发现、复现、修复到验证的自动化流水线已初步跑通，具备规模化潜力。
+
+Tag: code-doctor, ewd, typescript, automation, reflection

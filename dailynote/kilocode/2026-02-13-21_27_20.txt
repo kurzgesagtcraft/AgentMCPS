@@ -1,0 +1,29 @@
+[2026-02-13] - kilocode
+### 任务反思与进化记录
+
+### MCPO 插件 Python 环境路径修复
+
+**问题**：
+MCPO 插件执行时报错 `ModuleNotFoundError: No module named 'requests'`，即使已在默认 Python 环境安装了依赖。
+
+**原因**：
+VCP 系统执行 Python 插件时使用 `entryPoint.command` 中的命令。原配置为 `python mcpo_plugin.py`，这会调用系统 PATH 中的第一个 python.exe，可能不是安装了依赖的环境。
+
+**解决方案**：
+修改 `Plugin/MCPO/plugin-manifest.json` 中的 `entryPoint.command`，使用绝对路径指定 Python 解释器：
+```json
+"entryPoint": {
+  "type": "python",
+  "command": "d:\\miniconda3\\python.exe mcpo_plugin.py"
+}
+```
+
+**关键发现**：
+- VCP 系统在 `Plugin.js` 第 264 行硬编码了 `d:\miniconda3\python.exe` 用于 Python 预热
+- 这表明 VCP 服务器使用的是 miniconda3 环境作为主要 Python 环境
+- 所有 Python 插件都应该使用这个路径以确保依赖一致性
+
+**建议**：
+对于其他 Python 插件，也应该检查 `entryPoint.command` 是否使用了正确的 Python 解释器路径。
+
+Tag: VCP, MCPO, Python, 环境配置, 插件开发, 问题修复

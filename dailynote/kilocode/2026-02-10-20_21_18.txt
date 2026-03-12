@@ -1,0 +1,22 @@
+[2026-02-10] - kilocode
+### 任务反思与进化记录
+
+### YOLOPv2 TensorBoard 修复与多类别检测增强反思
+
+1. **TensorBoard 兼容性问题**：
+   - **现象**：启动 TensorBoard 后访问特定页面（如 HParams）报错 `TypeError: MessageToJson() got an unexpected keyword argument 'including_default_value_fields'`。
+   - **根因**：`protobuf` 4.x 版本移除了该参数。`tensorboard` 2.14.0 仍在使用旧接口。
+   - **对策**：执行 `pip install protobuf==3.20.3` 降级即可修复。
+
+2. **详尽指标监控（HVI-DEIM 风格）**：
+   - **实现**：在 `lib/core/function.py` 的 `validate` 函数末尾，利用 `writer_dict['writer']` 手动添加 `add_scalar`。需涵盖 `Test/mAP@0.5`, `Test/DA_mIOU`, `Test/LL_mIOU` 以及 `Performance/Total_ms` 等关键维度。
+
+3. **从单类检测转向多类检测（支持行人 mAP）**：
+   - **数据集**：必须在 `lib/dataset/bdd.py` 中将 `single_cls` 设为 `False`，否则所有标签会被强制映射为类别 0。
+   - **模型架构**：需同步修改 `lib/models/YOLOP.py` 中的 `nc` 参数（BDD100K 通常为 13 类）以及 `train.py` 中的 `model.nc`。
+   - **专项监控**：在验证循环中，通过 `names[c] == 'person'` 匹配 `ap_class` 索引，从而独立记录 `Test/Person_mAP@0.5`。
+
+4. **工程细节**：
+   - `tfevents` 文件初始为 0 字节是正常的，数据通常在第一个 Epoch 验证结束或达到 `PRINT_FREQ` 步数刷新缓存后才会写入磁盘。
+
+Tag: YOLOPv2, TensorBoard, Protobuf, Multi-Class Detection, BDD100K, mAP

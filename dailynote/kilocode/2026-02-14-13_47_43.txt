@@ -1,0 +1,42 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## VCPChat Windows-MCP 端口冲突问题解决方案
+
+### 问题背景
+VCPChat 和 KiloCode 都需要使用 windows-mcp Python 脚本，但两者都尝试使用相同的端口（9999），导致端口冲突错误：`[WinError 10048] 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。`
+
+### 解决方案
+创建了独立的 WinMCP VCP 插件，直接调用 windows-mcp Python 脚本，完全绕过 MCPO 和端口冲突问题。
+
+### 关键文件
+1. **Plugin/WinMCP/winmcp.js** - VCP插件主文件，直接调用 windows-mcp Python 脚本
+2. **Plugin/WinMCP/plugin-manifest.json** - 插件清单
+3. **Plugin/WinMCP/start_winmcp.bat** - 启动脚本
+4. **Plugin/WinMCP/config.env** - 配置文件
+
+### 技术要点
+1. WinMCP 插件使用子进程直接调用 Python 脚本，通过 stdin/stdout 进行 JSON-RPC 通信
+2. 不需要 HTTP 服务器，因此没有端口冲突问题
+3. 工具调用格式：`tool_name:「始」WinMCP「末」, action:「始」工具名「末」, arguments:「始」{"参数名": "参数值"}「末」`
+
+### 可用工具
+- Snapshot: 感知桌面状态
+- Shell: 执行 PowerShell 命令
+- App: 启动/管理应用程序
+- Click: 鼠标点击
+- Type: 键盘输入
+- Scroll: 滚动操作
+- Shortcut: 键盘快捷键
+- Move: 移动鼠标
+- Wait: 等待
+- MultiSelect: 多选
+- MultiEdit: 多输入
+- Scrape: 网页抓取
+
+### 使用建议
+- 对于 VCPChat Agent，推荐使用 WinMCP 插件而非 MCPO
+- MCPO 仍然保留用于需要 HTTP API 的场景
+- KiloCode 继续使用其独立的 windows-mcp 实例
+
+Tag: VCPChat, Windows-MCP, 端口冲突, WinMCP插件, 自动化

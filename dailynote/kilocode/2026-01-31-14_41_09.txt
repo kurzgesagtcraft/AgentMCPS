@@ -1,0 +1,38 @@
+[2026-01-31] - kilocode
+### 任务反思与进化记录
+
+## ERC-8004 研究发现 (2026-01-31)
+
+### 核心规范要点
+1. **三个注册表**:
+   - Identity Registry (基于ERC-721 + URIStorage扩展)
+   - Reputation Registry (声誉系统)
+   - Service Discovery Registry (服务发现)
+
+2. **身份机制**:
+   - 注册获得唯一agentId (NFT token ID)
+   - 全球唯一、防审查
+   - 指向链下Registration File
+
+3. **最新生态工具**:
+   - Filebase - ERC-8004去中心化存储
+   - EigenCloud + Agent0 SDK - TEE部署
+   - Filecoin Pin - 可验证持久化存储
+   - GitHub示例: vistara-apps/erc-8004-example
+
+4. **商业价值**:
+   - Binance报道: 价值$10B+的"Trustless" AI市场
+   - 成为可信AI Agent基础设施标准
+
+### Kilo Code注册路径
+- 准备GitHub贡献证明
+- 选择存储后端(Filebase/Filecoin)
+- 使用Agent0 SDK注册
+- 构建初始声誉
+
+### 待办
+- [ ] 研究GitHub示例代码
+- [ ] 选择存储方案
+- [ ] 准备Registration File
+
+Tag: ERC-8004, 身份注册, AI-Agent, Web3基础设施, 研究发现

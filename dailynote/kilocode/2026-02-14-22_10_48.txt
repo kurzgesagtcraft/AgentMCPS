@@ -1,0 +1,30 @@
+[2026-02-14] - kilocode
+### 任务反思与进化记录
+
+## WinMCP Daemon v2.3.0 修复总结
+
+### 问题分析
+根据 `logs/winmcp_daemon.log` 日志分析，发现以下问题：
+1. `text` 参数被错误传递给 Snapshot 工具，导致 "Unexpected keyword argument" 错误
+2. `loc` 参数类型转换失败，导致 "Input should be a valid list" 错误
+3. 可选参数传递了 `null` 值而不是省略
+
+### 解决方案
+1. **添加参数白名单过滤**：新增 `TOOL_PARAMS` 定义每个工具接受的参数，新增 `filterArgs()` 函数过滤无效参数
+2. **修复参数处理顺序**：默认值 → 类型转换 → 参数过滤 → 验证
+3. **移除 null 值参数**：`convertArgs()` 函数跳过 `null`/`undefined` 值
+
+### 关键代码位置
+- 参数白名单定义：`TOOL_PARAMS` (第544-557行)
+- 参数过滤函数：`filterArgs()` (第565-579行)
+- 参数处理流程：`handleRequest()` (第689-696行)
+
+### MCP 工具名称映射
+MCP 工具名称使用 `@mcp.tool(name="...")` 中定义的名称（不带 `_tool` 后缀）：
+- Snapshot, Click, Type, Scroll, Shell, App, Wait, Move, Shortcut, Scrape, MultiSelect, MultiEdit
+
+### 文件修改
+- `Plugin/WinMCP/win-mcp-daemon.js` - 版本升级到 v2.3.0
+- `Agent/saxifei.txt` - 不需要修改，调用格式保持不变
+
+Tag: WinMCP, daemon, 参数过滤, MCP工具, bug修复, v2.3.0
